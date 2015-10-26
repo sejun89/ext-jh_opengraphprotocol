@@ -90,11 +90,12 @@ class OgRendererService {
 				foreach ($fileObjects as $key => $fileObject) {
 					$og['image'][] = GeneralUtility::locationHeaderUrl($fileObject->getPublicUrl());
 				}
-			} else {
-				if (!empty($GLOBALS['TSFE']->tmpl->getFileName($conf['image']))) {
-					$og['image'][] = GeneralUtility::locationHeaderUrl($GLOBALS['TSFE']->tmpl->getFileName($conf['image']));
-				}
 			}
+//			else {
+//				if (!empty($GLOBALS['TSFE']->tmpl->getFileName($conf['image']))) {
+//					$og['image'][] = GeneralUtility::locationHeaderUrl($GLOBALS['TSFE']->tmpl->getFileName($conf['image']));
+//				}
+//			}
 		}
 		
 		// Get url

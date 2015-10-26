@@ -72,9 +72,9 @@ $tempColumns = array (
         'exclude' => 1,
         'label' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xml:pages.tx_jhopengraphprotocol_ogdescription',
         'config' => array (
-            'type' => 'input',
-            'size' => '30',
-            'max' => '100',
+            'type' => 'text',
+            'cols' => '48',
+            'rows' => '5',
         )
     ),
 );
