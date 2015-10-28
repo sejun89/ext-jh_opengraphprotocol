@@ -1,12 +1,36 @@
 config.htmlTag_setParams := appendString(xmlns:og="http://ogp.me/ns#")
 
-includeLibs.tx_jhopengraphprotocol = EXT:jh_opengraphprotocol/Classes/Service/OgRendererService.php
-temp.tx_jhopengraphprotocol = USER
-temp.tx_jhopengraphprotocol {
-    userFunc = Heilmann\JhOpengraphprotocol\Service\OgRendererService->main
-    type = {$plugin.tx_jhopengraphprotocol.type}
-    image = {$plugin.tx_jhopengraphprotocol.image}
-    sitename = {$plugin.tx_jhopengraphprotocol.sitename}
-    description = {$plugin.tx_jhopengraphprotocol.description}
+#includeLibs.tx_jhopengraphprotocol = EXT:jh_opengraphprotocol/Classes/Service/OgRendererService.php
+#temp.tx_jhopengraphprotocol = USER
+#temp.tx_jhopengraphprotocol {
+#    userFunc = Heilmann\JhOpengraphprotocol\Service\OgRendererService->main
+#    type = {$plugin.tx_jhopengraphprotocol.type}
+#    image = {$plugin.tx_jhopengraphprotocol.image}
+#    sitename = {$plugin.tx_jhopengraphprotocol.sitename}
+#    description =
+#}
+#page.669 < temp.tx_jhopengraphprotocol
+
+
+
+# Not needed anymore, because we will load the plugin through tt_content
+plugin.tx_jhopengraphprotocol = USER
+plugin.tx_jhopengraphprotocol {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    vendorName = Heilmann
+    extensionName = JhOpengraphprotocol
+    pluginName = Og
+    controller = OgRendererService
+    action = main
+
+    settings {
+        type = {$plugin.tx_jhopengraphprotocol.type}
+        image = {$plugin.tx_jhopengraphprotocol.image}
+        sitename = {$plugin.tx_jhopengraphprotocol.sitename}
+        description = {$plugin.tx_jhopengraphprotocol.description}
+    }
+#    persistence < plugin.tx_pbmenschmikrobe.persistence
+#    view < plugin.tx_pbmenschmikrobe.view
 }
-page.669 < temp.tx_jhopengraphprotocol
+
+page.669 < plugin.tx_jhopengraphprotocol

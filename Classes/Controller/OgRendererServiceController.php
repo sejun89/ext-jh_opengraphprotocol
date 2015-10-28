@@ -1,5 +1,5 @@
 <?php
-namespace Heilmann\JhOpengraphprotocol\Service;
+namespace Heilmann\JhOpengraphprotocol\Controller;
 
 /***************************************************************
 *  Copyright notice
@@ -30,21 +30,19 @@ use \TYPO3\CMS\Core\Utility\GeneralUtility;
 * @author    Jonathan Heilmann <mail@jonathan-heilmann.de>
 * @package    tx_jhopengraphprotocol
 */
-class OgRendererService {
+class OgRendererServiceController extends \TYPO3\CMS\Extensionmanager\Controller\ActionController {
 
 	/**
 	 * content Object
 	 */
-	var $cObj;
+	protected $cObj;
 
 	/**
 	 * Main-function to render the Open Grapg protocol content.
-	 *
-	 * @param	string	$content
-	 * @param	array		$conf
-	 * @return	string
 	 */
-	public function main($content, $conf){
+	public function mainAction(){
+
+		$this->cObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$extKey = 'tx_jhopengraphprotocol';
 		$content = '';
 		$og = array();
@@ -61,18 +59,18 @@ class OgRendererService {
 		//if there has been no return, get og properties and render output
 
 		// Get title
-		if (!empty($this->cObj->data['tx_jhopengraphprotocol_ogtitle'])) {
-			$og['title'] = $this->cObj->data['tx_jhopengraphprotocol_ogtitle'];
+		if (!empty($GLOBALS['TSFE']->page['tx_jhopengraphprotocol_ogtitle'])) {
+			$og['title'] = $GLOBALS['TSFE']->page['tx_jhopengraphprotocol_ogtitle'];
 		} else {
 			$og['title'] = $GLOBALS['TSFE']->page['title'];
 		}
 		$og['title'] = htmlspecialchars($og['title']);
 
 		// Get type
-		if (!empty($this->cObj->data['tx_jhopengraphprotocol_ogtype'])) {
-			$og['type'] = $this->cObj->data['tx_jhopengraphprotocol_ogtype'];
+		if (!empty($GLOBALS['TSFE']->page['tx_jhopengraphprotocol_ogtype'])) {
+			$og['type'] = $GLOBALS['TSFE']->page['tx_jhopengraphprotocol_ogtype'];
 		} else {
-			$og['type'] = $conf['type'];
+			$og['type'] = $this->settings['type'];
 		}
 		$og['type'] = htmlspecialchars($og['type']);
 
@@ -97,26 +95,26 @@ class OgRendererService {
 //				}
 //			}
 		}
-		
+
 		// Get url
-		$og['url'] = htmlentities(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
+		$og['url'] = $this->addBaseUriIfNecessary($this->uriBuilder->buildFrontendUri());
 
 		// Get site_name
-		if (!empty($conf['sitename'])) {
-			$og['site_name'] = $conf['sitename'];
+		if (!empty($this->settings['sitename'])) {
+			$og['site_name'] = $this->settings['sitename'];
 		} else {
-			$og['site_name'] = $GLOBALS['TSFE']->tmpl->setup['sitetitle'];
+			$og['site_name'] = $GLOBALS['TSFE']->TYPO3_CONF_VARS['SYS']['sitename'];
 		}
 		$og['site_name'] = htmlspecialchars($og['site_name']);
 
 		// Get description
-		if (!empty($this->cObj->data['tx_jhopengraphprotocol_ogdescription'])) {
-			$og['description'] = $this->cObj->data['tx_jhopengraphprotocol_ogdescription'];
+		if (!empty($GLOBALS['TSFE']->page['tx_jhopengraphprotocol_ogdescription'])) {
+			$og['description'] = $GLOBALS['TSFE']->page['tx_jhopengraphprotocol_ogdescription'];
 		} else {
 			if (!empty($GLOBALS['TSFE']->page['description'])) {
 				$og['description'] = $GLOBALS['TSFE']->page['description'];
 			} else {
-				$og['description'] = $conf['description'];
+				$og['description'] = $this->settings['description'];
 			}
 		}
 		$og['description'] = htmlspecialchars($og['description']);
